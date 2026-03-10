@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>EdgeVision Guard - Home</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+
+<header>
+    <h1>EdgeVision Guard</h1>
+    <nav>
+        <a href="index.html" class="active">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="analytics.html">Analytics</a>
+    </nav>
+</header>
+
+<main>
+    <div class="hero">
+        <h2>Welcome to EdgeVision Guard</h2>
+        <p>Advanced Edge AI Security Monitoring System</p>
+        
+        <div class="features">
+            <div class="feature-card">
+                <h3>Real-time Detection</h3>
+                <p>AI-powered object and motion detection</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Live Dashboard</h3>
+                <p>Monitor events in real-time</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Analytics</h3>
+                <p>Detailed insights and reports</p>
+            </div>
+        
+        <div class="cta-buttons">
+            <a href="dashboard.html" class="btn">View Dashboard</a>
+            <a href="analytics.html" class="btn btn-secondary">View Analytics</a>
+        </div>
+    
+        <div class="status-section">
+            <h3>System Status</h3>
+            <div id="system-status">
+                <p>Checking connection...</p>
+            </div>
+    </div>
+</main>
+
+<footer>
+<p>&copy; 2026 EdgeVision Guard - Security Monitoring System</p>
+</footer>
+
+<script src="script.js"></script>
+
+<script>
+    // Check system status
+    async function checkStatus() {
+        const statusDiv = document.getElementById('system-status');
+        try {
+            const response = await fetch("http://localhost:8000/health");
+            if (response.ok) {
+                statusDiv.innerHTML = '<p style="color:#00ff00;">● System Online</p><p style="color:#888;font-size:12px;margin-top:5px;">Backend is running at http://localhost:8000</p>';
+            } else {
+                statusDiv.innerHTML = '<p style="color:#ff4444;">● System Offline</p><p style="color:#888;font-size:12px;margin-top:5px;">Backend returned an error</p>';
+            }
+        } catch (error) {
+            statusDiv.innerHTML = `
+                <p style="color:#ff4444;">● Backend Not Running</p>
+                <div style="text-align:left;margin-top:15px;padding:10px;background:rgba(0,0,0,0.3);border-radius:5px;">
+                    <p style="color:#00d4ff;margin:0 0 10px 0;font-size:13px;">To start the backend, run:</p>
+                    <code style="color:#fff;display:block;background:#1a1a2e;padding:8px;border-radius:3px;font-size:12px;">python -m uvicorn backend.main:app --reload</code>
+                    <p style="color:#888;font-size:12px;margin:10px 0 0 0;">Then refresh this page</p>
+                </div>
+            `;
+        }
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', () => {
+        loadTheme();
+        checkStatus();
+    });
+</script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>EdgeVision Guard - Dashboard</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+
+<header>
+    <h1>EdgeVision Guard</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="analytics.html">Analytics</a>
+    </nav>
+</header>
+
+<main>
+    <h2>Event Dashboard</h2>
+    
+    <div class="controls">
+        <button onclick="fetchEvents()">Refresh</button>
+        <span id="last-updated"></span>
+    </div>
+
+    <table id="events">
+
+    <tr>
+    <th>Camera</th>
+    <th>Type</th>
+    <th>Count</th>
+    <th>Time</th>
+    </tr>
+
+    </table>
+</main>
+
+<footer>
+<p>&copy; 2026 EdgeVision Guard - Security Monitoring System</p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
+

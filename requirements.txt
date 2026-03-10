@@ -1,0 +1,13 @@
+
+opencv-python
+ultralytics
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+requests
+python-multipart
+passlib
+bcrypt
+python-jose
+paho-mqtt
