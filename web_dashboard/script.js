@@ -1,5 +1,16 @@
-// API Base URL
-const API_BASE = "http://localhost:8000";
+// API Base URL - configurable
+let API_BASE = "http://localhost:8000";
+
+// Function to set API base URL from frontend
+function setApiBaseUrl(url) {
+    API_BASE = url;
+    console.log("API Base URL set to:", API_BASE);
+}
+
+// Function to get current API base URL
+function getApiBaseUrl() {
+    return API_BASE;
+}
 
 // Create bubble effect on click
 function createBubble(e) {
@@ -164,6 +175,76 @@ async function fetchEvents() {
 
 // Make fetchEvents globally available
 window.fetchEvents = fetchEvents;
+
+// ==================== ANALYTICS FUNCTIONS ====================
+
+// Fetch event statistics from the API
+async function fetchEventStats() {
+    try {
+        const response = await fetch(`${API_BASE}/api/events/stats/summary`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const stats = await response.json();
+        return stats;
+    } catch (error) {
+        console.error('Error fetching event stats:', error);
+        return null;
+    }
+}
+
+// Load analytics data and display in the UI
+async function loadAnalytics() {
+    const totalEl = document.getElementById('total-events');
+    const camerasEl = document.getElementById('cameras-active');
+    const typesEl = document.getElementById('detection-types');
+    
+    if (!totalEl || !camerasEl || !typesEl) return;
+    
+    try {
+        const stats = await fetchEventStats();
+        
+        if (stats) {
+            totalEl.textContent = stats.total_events || 0;
+            camerasEl.textContent = stats.unique_cameras || 0;
+            typesEl.textContent = stats.unique_types || 0;
+        } else {
+            // Fallback to fetching all events
+            const response = await fetch(`${API_BASE}/api/events`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            const data = await response.json();
+            
+            const totalEvents = data.length;
+            const cameras = [...new Set(data.map(e => e.camera_id))];
+            const types = [...new Set(data.map(e => e.type))];
+            
+            totalEl.textContent = totalEvents;
+            camerasEl.textContent = cameras.length;
+            typesEl.textContent = types.length;
+        }
+    } catch (error) {
+        console.error('Error loading analytics:', error);
+        totalEl.textContent = '-';
+        camerasEl.textContent = '-';
+        typesEl.textContent = '-';
+    }
+}
+
+// Make analytics functions globally available
+window.loadAnalytics = loadAnalytics;
+window.fetchEventStats = fetchEventStats;
 
 // Auto-refresh events every 30 seconds
 document.addEventListener('DOMContentLoaded', () => {

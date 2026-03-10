@@ -57,44 +57,7 @@
 <script src="script.js"></script>
 
 <script>
-    // Analytics functionality
-    async function loadAnalytics() {
-        const totalEl = document.getElementById('total-events');
-        const camerasEl = document.getElementById('cameras-active');
-        const typesEl = document.getElementById('detection-types');
-        
-        try {
-            const response = await fetch("http://localhost:8000/api/events", {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            
-            const data = await response.json();
-            
-            // Calculate statistics
-            const totalEvents = data.length;
-            
-            // Get unique cameras
-            const cameras = [...new Set(data.map(e => e.camera_id))];
-            
-            // Get unique event types
-            const types = [...new Set(data.map(e => e.type))];
-            
-            totalEl.textContent = totalEvents;
-            camerasEl.textContent = cameras.length;
-            typesEl.textContent = types.length;
-            
-        } catch (error) {
-            console.error('Error loading analytics:', error);
-            totalEl.textContent = '-';
-            camerasEl.textContent = '-';
-            typesEl.textContent = '-';
-        }
-    }
-
-    // Initialize page
+    // Initialize page with analytics
     document.addEventListener('DOMContentLoaded', () => {
         loadTheme();
         loadAnalytics();
@@ -102,6 +65,5 @@
 </script>
 
 </body>
-
 </html>
 
